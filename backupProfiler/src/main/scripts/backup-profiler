@@ -1,0 +1,90 @@
+#!/bin/sh
+
+errorMessage()
+{
+  TITLE="Cannot start Backup Profiler"
+  if [ -t 1 ]; then
+    echo "ERROR: $TITLE\n$1"
+  elif [ -n `which zenity` ]; then
+    zenity --error --title="$TITLE" --text="$1"
+  elif [ -n `which kdialog` ]; then
+    kdialog --error --title "$TITLE" "$1"
+  elif [ -n `which xmessage` ]; then
+    xmessage -center "ERROR: $TITLE: $1"
+  elif [ -n `which notify-send` ]; then
+    notify-send "ERROR: $TITLE: $1"
+  else
+    echo "ERROR: $TITLE\n$1"
+  fi
+}
+
+if [ -n "$JRE_HOME" -a -x "$JRE_HOME/bin/java" ]; then
+  JRE="$JRE_HOME"
+elif [ -n "$JDK_HOME" -a -x "$JDK_HOME/bin/java" ]; then
+  JRE="$JDK_HOME"
+elif [ -n "$JAVA_HOME" -a -x "$JAVA_HOME/bin/java" ]; then
+  JRE="$JAVA_HOME"
+else
+  JAVA_BIN_PATH=`which java`
+  if [ -n "$JAVA_BIN_PATH" ]; then
+    if [ "$OS_TYPE" = "FreeBSD" -o "$OS_TYPE" = "MidnightBSD" ]; then
+      JAVA_LOCATION=`JAVAVM_DRYRUN=yes java | "$GREP" '^JAVA_HOME' | "$CUT" -c11-`
+      if [ -x "$JAVA_LOCATION/bin/java" ]; then
+        JRE="$JAVA_LOCATION"
+      fi
+    elif [ "$OS_TYPE" = "SunOS" ]; then
+      JAVA_LOCATION="/usr/jdk/latest"
+      if [ -x "$JAVA_LOCATION/bin/java" ]; then
+        JRE="$JAVA_LOCATION"
+      fi
+    elif [ "$OS_TYPE" = "Darwin" ]; then
+      JAVA_LOCATION=`/usr/libexec/java_home`
+      if [ -x "$JAVA_LOCATION/bin/java" ]; then
+        JRE="$JAVA_LOCATION"
+      fi
+    fi
+
+    if [ -z "$JDK" -a -x "$READLINK" -a -x "$XARGS" -a -x "$DIRNAME" ]; then
+      JAVA_LOCATION=`"$READLINK" -f "$JAVA_BIN_PATH"`
+      case "$JAVA_LOCATION" in
+        */jre/bin/java)
+          JAVA_LOCATION=`echo "$JAVA_LOCATION" | "$XARGS" "$DIRNAME" | "$XARGS" "$DIRNAME" | "$XARGS" "$DIRNAME"`
+          if [ ! -d "$JAVA_LOCATION/bin" ]; then
+            JAVA_LOCATION="$JAVA_LOCATION/jre"
+          fi
+          ;;
+        *)
+          JAVA_LOCATION=`echo "$JAVA_LOCATION" | "$XARGS" "$DIRNAME" | "$XARGS" "$DIRNAME"`
+          ;;
+      esac
+      if [ -x "$JAVA_LOCATION/bin/java" ]; then
+        JRE="$JAVA_LOCATION"
+      fi
+    fi
+  fi
+fi
+
+if [ -z "$JRE" ]; then
+    java -version 2>/dev/null
+
+    if [ $? -ne 0 ]; then
+        errorMessage "No Java found. Please validate either JRE_HOME, JDK_HOME or JAVA_HOME environment variable points to valid JRE installation."
+        exit 1
+    fi
+
+    JAVA_BIN=java
+else
+    JAVA_BIN="$JRE/bin/java"
+fi
+
+DIR=$(dirname $0)
+JAR=$DIR/lib/backup-profiler.jar
+
+if [ ! -f "$JAR" ]; then
+  errorMessage "No libs found. Please validate the distribution archive is fully downloaded and it's not corrupt."
+  exit 2
+fi
+
+JVM_ARGS="-Xms128m -Xmx750m -XX:MaxPermSize=350m -ea"
+
+eval "$JAVA_BIN" $JVM_ARGS -jar $DIR/lib/backup-profiler.jar "$@"

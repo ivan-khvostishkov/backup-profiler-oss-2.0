@@ -1,0 +1,5 @@
+/home/ikh/backupProfiler/backupProfiler/gradle
+/home/ikh/backupProfiler/backupProfiler/.gradle
+/home/ikh/backupProfiler/backupProfiler/out
+/home/ikh/backupProfiler/backupProfiler/build
+/home/ikh/backupProfiler/backupProfiler/.idea

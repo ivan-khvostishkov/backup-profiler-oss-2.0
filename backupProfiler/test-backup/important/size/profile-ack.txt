@@ -1,0 +1,3 @@
+/home/ikh/backupProfiler/backupProfiler/data/2019-02/
+/home/ikh/backupProfiler/backupProfiler/data/2018-07/
+/home/ikh/backupProfiler/backupProfiler/data-v1/

@@ -1,0 +1,10 @@
+/home/ikh/backupProfiler/backupProfiler/out/production/backupProfiler
+/home/ikh/backupProfiler/backupProfiler/build/resources/main
+/home/ikh/backupProfiler/backupProfiler/gradle/wrapper
+/home/ikh/backupProfiler/backupProfiler/build/distributions
+/home/ikh/backupProfiler/backupProfiler/build/classes
+/home/ikh/backupProfiler/backupProfiler/build/tmp
+/home/ikh/backupProfiler/backupProfiler/build/libs
+/home/ikh/backupProfiler/backupProfiler/out/artifacts
+/home/ikh/backupProfiler/backupProfiler/.gradle
+/home/ikh/backupProfiler/backupProfiler/.idea

@@ -1,0 +1,60 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'distribution'
+
+
+sourceCompatibility = 1.6  // by default, Java on OSX is 1.6
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'
+
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.7'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+}
+
+jar.doFirst{
+    manifest {
+        attributes("Manifest-Version"       : "1.0",
+//                "Created-By"             : vendor,
+//                "Specification-Title"    : appName,
+//                "Specification-Version"  : version,
+//                "Specification-Vendor"   : vendor,
+//                "Implementation-Title"   : appName,
+                "Implementation-Version" : version,
+//                "Implementation-Vendor"  : vendor,
+                "Main-Class"             : "net.nosocial.backupprofiler.Main",
+                "Class-Path"             : configurations.compile.collect { it.getName() }.join(' ')
+        )
+    }
+}
+
+jar {
+    archiveName = 'backup-profiler.jar'
+}
+
+distributions {
+    main {
+        contents {
+            into('') {
+                from 'src/main/scripts/backup-profiler'
+                fileMode = 0755
+            }
+            into('') {
+                from 'src/main/scripts/backup-profiler.bat'
+                fileMode = 0644
+            }
+            into('lib') {
+                from project.configurations.runtime
+                from jar
+            }
+        }
+    }
+}

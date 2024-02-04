@@ -1,0 +1,16 @@
+/home/ikh/backupProfiler/backupProfiler/.gitignore
+/home/ikh/backupProfiler/backupProfiler/test-backup/
+/home/ikh/backupProfiler/backupProfiler/removed
+/home/ikh/backupProfiler/backupProfiler/settings.gradle
+/home/ikh/backupProfiler/backupProfiler/backupProfiler.iml
+/home/ikh/backupProfiler/backupProfiler/src/nsis/
+/home/ikh/backupProfiler/backupProfiler/config/
+/home/ikh/backupProfiler/backupProfiler/src/main/
+/home/ikh/backupProfiler/backupProfiler/backupProfiler.iws
+/home/ikh/backupProfiler/backupProfiler/backupProfiler.ipr
+/home/ikh/backupProfiler/TODO
+/home/ikh/backupProfiler/backupProfiler/lib/
+/home/ikh/backupProfiler/README
+/home/ikh/backupProfiler/backupProfiler/data/
+/home/ikh/backupProfiler/backupProfiler/backupProfiler-1.0/
+/home/ikh/backupProfiler/backupProfiler/src/test/
